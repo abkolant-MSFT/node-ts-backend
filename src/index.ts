@@ -1,6 +1,7 @@
 import dotenv from 'dotenv-safe';
-import { cwd } from 'process';
+//import { cwd } from 'process';
 import { CosmosClient } from '@azure/cosmos';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 dotenv.config();
 
@@ -8,7 +9,9 @@ const key = process.env.COSMOS_KEY || '';
 const endpoint = process.env.COSMOS_ENDPOINT || '';
 const databaseId = process.env.COSMOS_DATABASE || '<cosmos database>';
 
-const client = new CosmosClient({ endpoint, key });
+//For Fiddler
+const proxyAgent = new HttpsProxyAgent('http://127.0.0.1:8888');
+const client = new CosmosClient({ endpoint, key, agent: proxyAgent });
 
 async function main() {
   console.log('************ START ************');
