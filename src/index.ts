@@ -8,7 +8,7 @@ const key = process.env.COSMOS_KEY || '';
 const endpoint = process.env.COSMOS_ENDPOINT || '';
 const databaseId = process.env.COSMOS_DATABASE || '<cosmos database>';
 
-const client = new CosmosClient({ endpoint, key });
+const singleTonClient = new CosmosClient({ endpoint, key });
 
 async function main() {
   console.log('************ START ************');
@@ -20,14 +20,14 @@ async function main() {
   console.log('************  END  ************');
 }
 
-async function listDatabases() {
+async function listDatabases(client: CosmosClient = singleTonClient) {
   const { resources: databases } = await client.databases.readAll().fetchAll();
   console.log(databases);
 }
 
 async function listContainers() {
   console.log('************ listContainers ************');
-  const { resources: containers } = await client.database('adventure-works').containers.readAll().fetchAll();
+  const { resources: containers } = await singleTonClient.database('adventure-works').containers.readAll().fetchAll();
   for (const container of containers) {
     console.log(container);
   }
@@ -44,7 +44,8 @@ async function foo(n: number): Promise<void> {
   }
 }
 async function bar(): Promise<void> {
-  await listDatabases();
+  const tempClient = new CosmosClient({ endpoint, key });
+  await listDatabases(tempClient);
 }
 
 main().catch((error) => {
