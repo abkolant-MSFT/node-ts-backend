@@ -7,7 +7,7 @@ dotenv.config();
 
 const key = process.env.COSMOS_KEY || '';
 const endpoint = process.env.COSMOS_ENDPOINT || '';
-const databaseId = process.env.COSMOS_DATABASE || '<cosmos database>';
+const databaseId = process.env.COSMOS_DATABASE || '';
 
 //For Fiddler
 const proxyAgent = new HttpsProxyAgent('http://127.0.0.1:8888');
